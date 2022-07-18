@@ -33,13 +33,11 @@ class CommentViewSet(ModelViewSet):
     serializer_class = CommentSerializer
 
     def get_queryset(self):
-        pk = self.kwargs.get("id")
-        post = get_object_or_404(Post, pk=pk)
+        post = get_object_or_404(Post, pk=self.kwargs.get("id"))
         return post.comments
 
     def perform_create(self, serializer):
-        pk = self.kwargs.get('id')
-        post = get_object_or_404(Post, pk=pk)
+        post = get_object_or_404(Post, pk=self.kwargs.get('id'))
         serializer.save(post=post)
 
     def perform_destroy(self, serializer):
@@ -52,8 +50,8 @@ class GroupViewSet(mixins.ListModelMixin,
                    mixins.RetrieveModelMixin,
                    GenericViewSet):
     """GROUP"""
-    serializer_class = GroupSerializer
     queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
 class FollowViewSet(mixins.ListModelMixin,
